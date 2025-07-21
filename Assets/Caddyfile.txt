@@ -1,0 +1,4 @@
+localhost:8443 {
+    reverse_proxy http://yeetai.duckdns.org
+    tls internal
+}
