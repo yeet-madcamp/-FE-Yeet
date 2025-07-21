@@ -34,7 +34,7 @@ public class TextEditor : MonoBehaviour
         ProcessText(newText);
     }
 
-    // 텍스트 처리용 메서드
+    // 텍스트 처리용 메서드 맵에만 적용
     void ProcessText(string newText)
     {
         Debug.Log("newText1: " + newText);

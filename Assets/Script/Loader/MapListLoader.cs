@@ -5,6 +5,7 @@ using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using static UnityEngine.ParticleSystem;
 
 [System.Serializable]
 public class MapDataList
@@ -19,6 +20,7 @@ public class MapListLoader : MonoBehaviour
     private enum ScenePosition { main, sandbox}
 
     [SerializeField] private ScenePosition currentPos;
+    [SerializeField] private MainMode mainMode;
     [SerializeField] private Transform contentParent;        // Content 오브젝트
     [SerializeField] private GameObject itemPrefab;          // 생성할 버튼/패널 프리팹
     [SerializeField] private GameObject savedModelPanel;
@@ -93,17 +95,55 @@ public class MapListLoader : MonoBehaviour
                 }
                 else if (currentPos == ScenePosition.main)
                 {
-                    button.onClick.AddListener(() =>
+                    if(mainMode == MainMode.edit)
                     {
-                        TextDataManager.Instance.mapName = selectedName;
-                        TextDataManager.Instance.mapId = map.map_id;
-                        savedModelPanel.SetActive(true);
-                        savedModelPanel.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = selectedName;
-                    });
+                        button.onClick.AddListener(() =>
+                        {
+                            TextDataManager.Instance.mapName = selectedName;
+                            TextDataManager.Instance.mapId = map.map_id;
+                            savedModelPanel.SetActive(true);
+                            savedModelPanel.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = selectedName;
+                        });
+                    }
+                    else if (mainMode == MainMode.train)
+                    {
+                        button.onClick.AddListener(() =>
+                        {
+                            TextDataManager.Instance.mapName = selectedName;
+                            TextDataManager.Instance.mapId = map.map_id;
+                            Debug.Log("mapName =" + TextDataManager.Instance.mapName);
+                            Debug.Log("mapId =" + TextDataManager.Instance.mapId);
+                            OnMapSelected(button);
+                        });
+                        
+                    }
                 }
             }
         }
     }
+    private Button selectedMapButton = null;
+    private Image selectedMapImage = null;
+
+    // 📌 Map 버튼 클릭 시
+    void OnMapSelected(Button currentButton)
+    {
+        if (selectedMapImage != null)
+        {
+            selectedMapImage.color = Color.gray;
+        }
+
+        // 현재 버튼 색 설정
+        Image img = currentButton.GetComponent<Image>();
+        if (img != null)
+        {
+            img.color = Color.yellow;
+            selectedMapImage = img;
+        }
+
+        selectedMapButton = currentButton;
+    }
+
+
 
     //public void ListMapItems()
     //{
