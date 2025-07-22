@@ -1,0 +1,23 @@
+{
+    "map_id": "",
+    "map_name": "easy1",
+    "map_type": "grid",
+    "map_owner_id": "45f6b4",
+    "map_owner_name": "seowoo",
+    "map_size": [
+        5,
+        5
+    ],
+    "max_steps": 40,
+    "agent_pos": {
+        "x": 0,
+        "y": 0
+    },
+    "exit_pos": {
+        "x": 1,
+        "y": 0
+    },
+    "wall_list": [],
+    "bit_list": [],
+    "trap_list": []
+}

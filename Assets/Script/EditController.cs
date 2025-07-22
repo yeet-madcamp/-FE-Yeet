@@ -117,17 +117,31 @@ public class EditController : MonoBehaviour
 
         Vector3 gridPos = new Vector3(gridX, gridY, 0);
 
-        // 이미 벽이 있는지 확인
+        // 이미 오브젝트가 있는지 확인
         Collider2D hit = Physics2D.OverlapPoint(gridPos);
+
         if (currentState == EditState.Placing)
         {
+            // 현재 맵에 존재하는 코인 개수 확인
+            int currentCoinCount = GameObject.FindGameObjectsWithTag("BitCoin").Length;
+
+            if (currentCoinCount >= 3)
+            {
+                Debug.Log("⚠️ 최대 코인 개수(3개)에 도달했습니다.");
+                return;
+            }
+
             if (hit == null)
+            {
                 Instantiate(editPrefabs[1], gridPos, Quaternion.identity, editParents[1]);
+            }
         }
         else if (currentState == EditState.Deleting)
         {
             if (hit != null && hit.CompareTag("BitCoin"))
+            {
                 Destroy(hit.gameObject);
+            }
         }
     }
     void TrapControl()

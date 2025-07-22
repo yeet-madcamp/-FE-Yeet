@@ -17,18 +17,6 @@ public class MapLoader : MonoBehaviour
 
     private void Start()
     {
-        //string mapName = TextDataManager.Instance.mapName;
-        //string path = Path.Combine(Application.dataPath, mapName + ".json");
-        //if (File.Exists(path))
-        //{
-        //    LoadGridFromJson(mapName);
-        //}
-        //else
-        //{
-        //    Debug.LogWarning($"🟡 해당 JSON 파일이 존재하지 않습니다: {path}");
-        //    // 그리드는 초기 상태로 유지하거나, 빈 상태 생성 등 추가 행동 가능
-        //}
-
         string mapName = TextDataManager.Instance.mapName;
         StartCoroutine(LoadMapFromServer(mapName));
     }
@@ -55,15 +43,20 @@ public class MapLoader : MonoBehaviour
 
         MapData targetMap = dataList.maps.Find(map => map.map_name == mapName);
 
-        Vector2Int initialPosition = new Vector2Int(targetMap.agent_pos[0], targetMap.agent_pos[1]);
-
-        movement2D.SetInitialPosition(initialPosition);
         if (targetMap == null)
         {
             Debug.LogWarning($"🟡 해당 이름의 맵이 존재하지 않습니다. 새 맵으로 간주합니다: {mapName}");
-            TextDataManager.Instance.mapId = null; // map_id를 null로 설정해 새 맵 저장 시 POST로 생성 가능하게
+            TextDataManager.Instance.mapId = null;
+
+            // 초기 위치를 (0, 0)으로 설정
+            Vector2Int initialPosition = new Vector2Int(0, 0);
+            movement2D.SetInitialPosition(initialPosition);
+
             yield break;
         }
+
+        Vector2Int loadedPosition = new Vector2Int(targetMap.agent_pos[0], targetMap.agent_pos[1]);
+        movement2D.SetInitialPosition(loadedPosition);
 
         LoadGridFromData(targetMap);
     }

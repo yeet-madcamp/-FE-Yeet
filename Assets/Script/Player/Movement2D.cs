@@ -6,10 +6,10 @@ public class Movement2D : MonoBehaviour
     [SerializeField]
     private float moveTime = 0.000001f;
 
-    private int minX = 0;
-    private int maxX = 6;
-    private int minY = 0;
-    private int maxY = 6;
+    public int minX = 0;
+    public int maxX = 6;
+    public int minY = 0;
+    public int maxY = 6;
 
     
 
@@ -41,6 +41,8 @@ public class Movement2D : MonoBehaviour
         //maxY = offsetR;
         //minX = -offsetC;
         //minY = -offsetR;
+        Vector2Int pos = new Vector2Int(0, 0);
+        SetInitialPosition(pos);
     }
 
     public void SetInitialPosition(Vector2Int gridPos)

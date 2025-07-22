@@ -7,6 +7,7 @@ public class GridManager : MonoBehaviour
     [SerializeField] private GameObject tilePrefab;
     [SerializeField] private Transform gridParent;
     [SerializeField] private EditController editController;
+    [SerializeField] private Movement2D movement2D;
 
     public int rows = 5;
     public int columns = 5;
@@ -112,6 +113,11 @@ public class GridManager : MonoBehaviour
         editController.maxX = columns / 2;
         editController.minY = -rows / 2;
         editController.maxY = rows / 2;
+
+        movement2D.minX = -columns / 2;
+        movement2D.maxX = columns / 2;
+        movement2D.minY = -rows / 2;
+        movement2D.maxY = rows / 2;
         GenerateGrid();
     }
 

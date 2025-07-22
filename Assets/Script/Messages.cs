@@ -21,6 +21,7 @@ public class StepMessage : BaseMessage
     public bool terminated;
     public bool truncated;
     public int success;
+    public bool is_success;
 }
 
 [System.Serializable]

@@ -24,25 +24,20 @@ public class MapData
 public class MapSaver : MonoBehaviour
 {
     [SerializeField] private GridManager gridManager;
+    [SerializeField] private GameObject ERRORPanel;
 
     public void SaveGridToJson()
     {
         MapData data = GenerateMapData();
+        if (data == null)
+        {
+            Debug.LogWarning("❌ 맵 저장 실패: 필수 요소 누락");
+            ERRORPanel.SetActive(true);
+            return;
+        }
 
         // 기존 map_id가 있다면 포함 (중요!)
         data.map_id = TextDataManager.Instance.mapId;  // 여기에 저장된 map_id 필요
-
-        string json = JsonUtility.ToJson(data, true);
-
-        string mapName = data.map_name;
-
-        string path1 = Path.Combine(Application.persistentDataPath, mapName + ".json");
-        string path2 = Path.Combine(Application.dataPath, mapName + ".json");
-
-        File.WriteAllText(path1, json);
-        File.WriteAllText(path2, json);
-
-        Debug.Log("✅ 로컬 저장 완료: " + path2);
 
         // 서버에도 저장 시도
         StartCoroutine(SaveGridToServer(data));
@@ -57,6 +52,13 @@ public class MapSaver : MonoBehaviour
         GameObject[] coins = GameObject.FindGameObjectsWithTag("BitCoin");
         GameObject[] traps = GameObject.FindGameObjectsWithTag("Trap");
         GameObject exit = GameObject.FindGameObjectWithTag("Exit");
+        GameObject agent = GameObject.FindGameObjectWithTag("Player");
+
+        if (exit == null)
+        {
+            Debug.LogWarning("⚠️ 출구(Exit)가 맵에 없습니다! 저장을 중단합니다.");
+            return null;
+        }
 
         foreach (var wall in walls)
             data.wall_list.Add(Vector2Int.RoundToInt(wall.transform.position));
@@ -70,7 +72,7 @@ public class MapSaver : MonoBehaviour
         data.map_owner_id = TextDataManager.Instance.userId;
         data.map_owner_name = TextDataManager.Instance.enteredUsername;
         data.max_steps = TextDataManager.Instance.mapStep;
-        data.agent_pos = new Vector2Int(0, 0);
+        data.agent_pos = Vector2Int.RoundToInt(agent.transform.position);
         data.exit_pos = Vector2Int.RoundToInt(exit.transform.position);
 
         return data;

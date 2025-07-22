@@ -13,11 +13,14 @@ public class WebSocketClient : MonoBehaviour
     [SerializeField] private TextMeshProUGUI stepText;
     [SerializeField] private TextMeshProUGUI successText;
 
+    [SerializeField] private GameObject SuccessPanel;
+
     [SerializeField] private Queue<StepMessage> messageQueue = new Queue<StepMessage>();
 
     private WebSocket websocket;
 
     public bool isSpeedMode = false;
+    private bool isSuccess = false;
 
     string uri;
 
@@ -80,6 +83,7 @@ public class WebSocketClient : MonoBehaviour
                         case "episode_success":
                             var success = JsonConvert.DeserializeObject<EpisodeSuccessMessage>(message);
                             Debug.Log($"🎉 에피소드 성공: {success.episode}, 총 보상: {success.total_reward}");
+                            
                             break;
 
                         default:
@@ -169,6 +173,11 @@ public class WebSocketClient : MonoBehaviour
             stepText.text = $"Step: {msg.step}";
         if (TextDataManager.Instance.isLoopOn)
             successText.text = $"Success : {msg.success}";
+        if(msg.is_success)
+        {
+            SuccessPanel.SetActive(true);
+            return;
+        }
 
         if (msg.terminated || msg.truncated)
         {

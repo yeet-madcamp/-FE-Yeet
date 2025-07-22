@@ -12,6 +12,7 @@ public class TextDataManager : MonoBehaviour
     [HideInInspector] public string enteredUsername;
     [HideInInspector] public string userId;
     [HideInInspector] public int mapStep = 40;
+    [HideInInspector] public Vector2Int agentPos;
 
 
 
