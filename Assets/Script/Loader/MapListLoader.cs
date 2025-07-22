@@ -78,6 +78,15 @@ public class MapListLoader : MonoBehaviour
         {
             GameObject item = Instantiate(itemPrefab, contentParent);
 
+            RawImage thumbnail = item.GetComponentInChildren<RawImage>(); // 이미지 컴포넌트 받아오
+            Debug.Log("진입 전 ");
+            if (thumbnail != null)
+            {
+                Debug.Log("진입 후 ");
+                StartCoroutine(LoadThumbnail(map.map_id, thumbnail));
+                Debug.Log("코루틴 후  ");
+            }
+
             var textComp = item.GetComponentInChildren<TMPro.TextMeshProUGUI>();
             if (textComp != null)
                 textComp.text = map.map_name;
@@ -138,11 +147,32 @@ public class MapListLoader : MonoBehaviour
         Image img = currentButton.GetComponent<Image>();
         if (img != null)
         {
-            img.color = Color.yellow;
+            img.color = Color.white;
             selectedMapImage = img;
         }
 
         selectedMapButton = currentButton;
+    }
+
+    IEnumerator LoadThumbnail(string mapId, RawImage imageComponent)
+    {
+        string baseUrl = ConfigLoader.GetBaseUrl();
+        string url = $"{baseUrl}/maps/image/{mapId}";
+
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            Texture2D texture = DownloadHandlerTexture.GetContent(request);
+            imageComponent.texture = texture;
+            imageComponent.color = Color.white; // 혹시 투명할 수 있으므로
+            Debug.Log("썸네일 로딩 성공!");
+        }
+        else
+        {
+            Debug.LogError($"❌ 썸네일 로딩 실패 ({mapId}): {request.error}");
+        }
     }
 
 

@@ -166,7 +166,7 @@ public class ModelListLoader : MonoBehaviour
         Image img = currentButton.GetComponent<Image>();
         if (img != null)
         {
-            img.color = Color.yellow;
+            img.color = Color.white;
             selectedModelImage = img;
         }
 

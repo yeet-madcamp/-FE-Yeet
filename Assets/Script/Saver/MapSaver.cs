@@ -20,11 +20,31 @@ public class MapData
     public List<Vector2Int> bit_list = new List<Vector2Int>();
     public List<Vector2Int> trap_list = new List<Vector2Int>();
 }
+[System.Serializable]
+public class MapSaveResponse
+{
+    public string map_id;
+    public string map_name;
+    public string map_type;
+    public string map_owner_id;
+    public string map_owner_name;
+    public int[] map_size;
+    public Vector2Int agent_pos;
+    public Vector2Int exit_pos;
+    public List<Vector2Int> wall_list;
+    public List<Vector2Int> bit_list;
+    public List<Vector2Int> trap_list;
+    public int max_steps;
+    public string map_url;
+    public int type;
+}
 
 public class MapSaver : MonoBehaviour
 {
     [SerializeField] private GridManager gridManager;
     [SerializeField] private GameObject ERRORPanel;
+
+    [SerializeField] private Camera mapCamera;
 
     public void SaveGridToJson()
     {
@@ -109,6 +129,57 @@ public class MapSaver : MonoBehaviour
         else
         {
             Debug.Log("✅ 서버 저장 성공!");
+            // 🔽 응답 파싱
+            string responseText = request.downloadHandler.text;
+            MapSaveResponse response = JsonUtility.FromJson<MapSaveResponse>(responseText);
+
+            Debug.Log("📥 받은 map_id: " + response.map_id);
+
+            // 🔽 이미지 업로드
+            SaveMapAndUploadImage(response);
         }
+    }
+    public Texture2D CaptureMapImage(Camera targetCamera, int width, int height, float centerRatio = 0.5f)
+    {
+        RenderTexture rt = new RenderTexture(width, height, 24);
+        targetCamera.targetTexture = rt;
+        targetCamera.Render();
+
+        RenderTexture.active = rt;
+
+        // 중심 기준 영역 계산
+        int cropWidth = Mathf.RoundToInt(width * centerRatio);
+        int cropHeight = Mathf.RoundToInt(height * centerRatio);
+        int x = (width - cropWidth) / 2;
+        int y = (height - cropHeight) / 2;
+
+        // 중앙 부분만 읽기
+        Texture2D cropped = new Texture2D(cropWidth, cropHeight, TextureFormat.RGB24, false);
+        cropped.ReadPixels(new Rect(x, y, cropWidth, cropHeight), 0, 0);
+        cropped.Apply();
+
+        // 정리
+        targetCamera.targetTexture = null;
+        RenderTexture.active = null;
+        Destroy(rt);
+
+        return cropped;
+    }
+    public string SaveTextureToPNG(Texture2D texture, string fileName)
+    {
+        string path = Path.Combine(Application.persistentDataPath, fileName);
+        byte[] bytes = texture.EncodeToPNG();
+        File.WriteAllBytes(path, bytes);
+        Debug.Log("📸 이미지 저장 경로: " + path);
+        return path;
+    }
+    void SaveMapAndUploadImage(MapSaveResponse response)
+    {
+        // width=512, height=512에서 중앙 70% 영역만 캡처하고 싶을 때
+        Texture2D mapImage = CaptureMapImage(mapCamera, 512, 512, 0.5f);
+        string imagePath = SaveTextureToPNG(mapImage, $"{TextDataManager.Instance.mapId}.png");
+
+        string mapId = response.map_id;
+        StartCoroutine(FindObjectOfType<MapImageUploader>().UploadMapImage(mapId, imagePath));
     }
 }
