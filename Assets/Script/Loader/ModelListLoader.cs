@@ -8,7 +8,7 @@ public enum MainMode { edit, train};
 
 public class ModelListLoader : MonoBehaviour
 {
-    [SerializeField] private Transform contentParent;       // 생성 위치
+    [SerializeField] private Transform[] contentParents;       // 생성 위치
     [SerializeField] private GameObject itemPrefab;         // 버튼 프리팹
     [SerializeField] private GameObject modelInfoPanel;     // 선택한 모델 정보 표시용 패널
 
@@ -27,7 +27,9 @@ public class ModelListLoader : MonoBehaviour
 
     public IEnumerator LoadModelListFromServer()
     {
-        string url = ConfigLoader.GetBaseUrl() + "/models";
+        string baseUrl = ConfigLoader.GetBaseUrl();  // 예: http://yeetai.duckdns.org/api/backend
+        string userId = TextDataManager.Instance.userId;
+        string url = $"{baseUrl}/models/user/{userId}";
         Debug.Log("📡 모델 요청 주소: " + url);
 
         UnityWebRequest request = UnityWebRequest.Get(url);
@@ -54,49 +56,55 @@ public class ModelListLoader : MonoBehaviour
 
         foreach (var model in models)
         {
-            GameObject item = Instantiate(itemPrefab, contentParent);
-
-            var textComp = item.GetComponentInChildren<TMPro.TextMeshProUGUI>();
-            if (textComp != null)
-                textComp.text = model.model_name;
-
-            var button = item.GetComponent<Button>();
-            if (button != null)
+            foreach(Transform parent in contentParents)
             {
-                if(mainMode == MainMode.edit)
+                GameObject item = Instantiate(itemPrefab, parent);
+                var textComp = item.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+                if (textComp != null)
+                    textComp.text = model.model_name;
+
+                var button = item.GetComponent<Button>();
+                if (button != null)
                 {
-                    var capturedModel = model; // 🔒 캡처 중요
-                    button.onClick.AddListener(() =>
+                    if (mainMode == MainMode.edit)
                     {
-                        Debug.Log($"🧠 선택된 모델: {capturedModel.model_name} (ID: {capturedModel.model_id})");
-                        OnModelSelected(capturedModel);
-                    });
-                }
-                else if(mainMode == MainMode.train)
-                {
-                    var capturedModel = model;
-                    button.onClick.AddListener(() =>
+                        var capturedModel = model; // 🔒 캡처 중요
+                        button.onClick.AddListener(() =>
+                        {
+                            Debug.Log($"🧠 선택된 모델: {capturedModel.model_name} (ID: {capturedModel.model_id})");
+                            OnModelSelected(capturedModel);
+                        });
+                    }
+                    else if (mainMode == MainMode.train)
                     {
-                        TextDataManager.Instance.modelId = model.model_id;
-                        OnModelSelectedColor(button);
-                    });
-                    
+                        var capturedModel = model;
+                        button.onClick.AddListener(() =>
+                        {
+                            TextDataManager.Instance.modelId = model.model_id;
+                            OnModelSelectedColor(button);
+                        });
+
+                    }
                 }
             }
         }
     }
     private void ClearExistingMapItems(string excludeName)
     {
-        foreach (Transform child in contentParent)
+        foreach(Transform parent in contentParents)
         {
-
-            if (child.name == excludeName)
+            foreach (Transform child in parent)
             {
-                continue; // 삭제 제외
-            }
 
-            Destroy(child.gameObject); // 삭제
+                if (child.name == excludeName)
+                {
+                    continue; // 삭제 제외
+                }
+
+                Destroy(child.gameObject); // 삭제
+            }
         }
+        
     }
     void OnModelSelected(ModelData model)
     {

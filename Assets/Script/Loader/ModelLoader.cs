@@ -38,7 +38,8 @@ public class ModelLoader : MonoBehaviour
     IEnumerator LoadModelsFromServer()
     {
         string baseUrl = ConfigLoader.GetBaseUrl();  // 예: http://yeetai.duckdns.org/api/backend
-        string url = $"{baseUrl}/models";
+        string userId = TextDataManager.Instance.userId;
+        string url = $"{baseUrl}/models/user/{userId}";
 
         UnityWebRequest request = UnityWebRequest.Get(url);
         request.SetRequestHeader("Content-Type", "application/json");

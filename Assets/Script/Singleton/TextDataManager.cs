@@ -8,6 +8,9 @@ public class TextDataManager : MonoBehaviour
     [HideInInspector] public string mapId = "";             // ✅ 서버에서 받아온 map_id 저장용
     [HideInInspector] public string modelId = "";
     [HideInInspector] public bool isLoopOn = false;
+    [HideInInspector] public string enteredId;
+    [HideInInspector] public string enteredUsername;
+    [HideInInspector] public string userId;
 
 
     void Awake()

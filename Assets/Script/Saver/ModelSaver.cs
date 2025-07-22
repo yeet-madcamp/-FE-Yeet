@@ -52,8 +52,13 @@ public class ModelSaver : MonoBehaviour
             model_type = type,
             learning_rate = rate,
             batch_size = batch,
-            model_owner_id = "jsewo9119",
-            model_owner_name = "seowoo"
+            model_owner_id = TextDataManager.Instance.userId,
+            model_owner_name = TextDataManager.Instance.enteredUsername,
+            gamma = 0.99f,
+            epsilon_start = 1,
+            epsilon_min = 0.05f,
+            epsilon_decay = 0.995f,
+            update_target_every = 10
         };
 
         // 서버로 POST 전송

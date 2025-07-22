@@ -109,15 +109,34 @@ public class WebSocketClient : MonoBehaviour
 
     private async void OnApplicationQuit()
     {
-        await websocket.Close();
+        try
+        {
+            if (websocket != null && websocket.State == WebSocketState.Open)
+            {
+                Debug.Log("🔌 앱 종료 시 WebSocket 닫기 시도 중...");
+                await websocket.Close();
+                Debug.Log("✅ WebSocket 정상 종료 완료");
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("⚠️ WebSocket 종료 중 예외 발생: " + ex.Message);
+        }
     }
 
     public async void DisconnectWebSocket()
     {
-        if (websocket != null && websocket.State == WebSocketState.Open)
+        try
         {
-            await websocket.Close();
-            Debug.Log("🔌 WebSocket 수동 종료 완료");
+            if (websocket != null && websocket.State == WebSocketState.Open)
+            {
+                await websocket.Close();
+                Debug.Log("🔌 WebSocket 수동 종료 완료");
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogWarning("⚠️ WebSocket 수동 종료 중 예외 발생: " + ex.Message);
         }
     }
 

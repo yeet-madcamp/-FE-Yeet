@@ -1,32 +1,36 @@
-using UnityEngine;
-using UnityEngine.UI; // TMP 쓰는 경우: using TMPro;
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
+using UnityEngine;
 
-public class TextEditor : MonoBehaviour
+public class LoginEditor : MonoBehaviour
 {
-
     public TextMeshProUGUI displayText;          // 현재 텍스트 보여주는 Text
     public TMP_InputField inputField;     // 수정할 수 있는 InputField
 
+    string loginType;
+
+    // Start is called before the first frame update
     void Start()
     {
         inputField.gameObject.SetActive(false); // 처음엔 숨겨둠
-        inputField.onSubmit.AddListener(OnEditComplete);
+        inputField.onSubmit.AddListener(OnLoginComplete);
     }
 
     // 버튼 클릭 시 호출
-    public void OnEditButtonClick()
+    public void OnLoginButtonClick(string type)
     {
         inputField.text = displayText.text;
         displayText.gameObject.SetActive(false);
         inputField.gameObject.SetActive(true);
         inputField.Select();
         inputField.ActivateInputField();
+        loginType = type;
     }
 
     // 저장하거나 포커스 잃었을 때 호출
     // 엔터 입력 후 자동 호출됨 (OnEndEdit 이벤트로 연결)
-    public void OnEditComplete(string newText)
+    public void OnLoginComplete(string newText)
     {
         displayText.text = newText;
         displayText.gameObject.SetActive(true);
@@ -38,8 +42,13 @@ public class TextEditor : MonoBehaviour
     // 텍스트 처리용 메서드 맵에만 적용
     void ProcessText(string newText)
     {
-        Debug.Log("newText1: " + newText);
-        TextDataManager.Instance.mapName = newText;
-        Debug.Log("newText2: " + TextDataManager.Instance.mapName);
+        if(loginType == "id")
+        {
+            TextDataManager.Instance.enteredId = newText;
+        }
+        else if(loginType == "name")
+        {
+            TextDataManager.Instance.enteredUsername = newText;
+        }
     }
 }

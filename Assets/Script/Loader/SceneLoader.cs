@@ -29,4 +29,13 @@ public class SceneLoader : MonoBehaviour
     {
         SceneManager.LoadScene("TrainingScene");
     }
+    public void LoadMainSceneInLogin()
+    {
+        SceneManager.LoadScene("MainScene");
+    }
+    public void LoadMainSceneInSB()
+    {
+        TextDataManager.Instance.isLoopOn = false;
+        SceneManager.LoadScene("MainScene");
+    }
 }

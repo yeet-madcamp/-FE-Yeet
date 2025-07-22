@@ -48,7 +48,9 @@ public class MapListLoader : MonoBehaviour
     //서버 연결
     IEnumerator LoadMapListFromServer()
     {
-        string url = ConfigLoader.GetBaseUrl() + "/maps";
+        string baseUrl = ConfigLoader.GetBaseUrl();
+        string userId = TextDataManager.Instance.userId;
+        string url = $"{baseUrl}/maps/user/{userId}";
         Debug.Log("요청 주소: " + url);
 
         UnityWebRequest request = UnityWebRequest.Get(url);

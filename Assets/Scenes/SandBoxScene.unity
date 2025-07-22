@@ -1029,7 +1029,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 276561264}
         m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadMainScene
+        m_MethodName: LoadMainSceneInSB
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1293,6 +1293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textEditor: {fileID: 0}
+  ws: {fileID: 0}
 --- !u!1 &306907456
 GameObject:
   m_ObjectHideFlags: 0

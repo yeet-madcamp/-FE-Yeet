@@ -36,7 +36,8 @@ public class MapLoader : MonoBehaviour
     private IEnumerator LoadMapFromServer(string mapName)
     {
         string baseUrl = ConfigLoader.GetBaseUrl();
-        string url = $"{baseUrl}/maps";
+        string userId = TextDataManager.Instance.userId;
+        string url = $"{baseUrl}/maps/user/{userId}";
         Debug.Log($"🌐 요청 URL: {url}");
 
         UnityWebRequest request = UnityWebRequest.Get(url);
