@@ -974,6 +974,78 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 123705298}
   m_CullTransparentMesh: 1
+--- !u!1 &123808180
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 123808183}
+  - component: {fileID: 123808182}
+  - component: {fileID: 123808181}
+  m_Layer: 0
+  m_Name: UIManager2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &123808181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123808180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0808d6b21548d48a084e91666ddcb478, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contentParents:
+  - {fileID: 1634260593}
+  itemPrefab: {fileID: 1800838598213053851, guid: c4c4a7604c13d4bbbacd35f7b39f166b, type: 3}
+  modelInfoPanel: {fileID: 1542406985}
+  nameEditor: {fileID: 0}
+  typeEditor: {fileID: 0}
+  rateEditor: {fileID: 0}
+  batchEditor: {fileID: 0}
+  mainMode: 1
+--- !u!114 &123808182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123808180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3e2eed22586f4acea61f32d8db57d9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentPos: 0
+  mainMode: 1
+  contentParent: {fileID: 1071628788}
+  itemPrefab: {fileID: 1800838598213053851, guid: c4c4a7604c13d4bbbacd35f7b39f166b, type: 3}
+  savedModelPanel: {fileID: 1646123950}
+  mapLoader: {fileID: 0}
+--- !u!4 &123808183
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123808180}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.2222223, y: -3.2870374, z: 90}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &159753472
 GameObject:
   m_ObjectHideFlags: 0
@@ -8524,7 +8596,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contentParents:
   - {fileID: 2001495495}
-  - {fileID: 1634260593}
   itemPrefab: {fileID: 1800838598213053851, guid: c4c4a7604c13d4bbbacd35f7b39f166b, type: 3}
   modelInfoPanel: {fileID: 1542406985}
   nameEditor: {fileID: 2093586677}
@@ -13837,8 +13908,6 @@ GameObject:
   - component: {fileID: 1678492786}
   - component: {fileID: 1678492788}
   - component: {fileID: 1678492787}
-  - component: {fileID: 1678492790}
-  - component: {fileID: 1678492789}
   m_Layer: 5
   m_Name: TrainPanel
   m_TagString: Untagged
@@ -13907,44 +13976,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1678492785}
   m_CullTransparentMesh: 1
---- !u!114 &1678492789
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1678492785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0808d6b21548d48a084e91666ddcb478, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  contentParents: []
-  itemPrefab: {fileID: 1800838598213053851, guid: c4c4a7604c13d4bbbacd35f7b39f166b, type: 3}
-  modelInfoPanel: {fileID: 1542406985}
-  nameEditor: {fileID: 0}
-  typeEditor: {fileID: 0}
-  rateEditor: {fileID: 0}
-  batchEditor: {fileID: 0}
-  mainMode: 1
---- !u!114 &1678492790
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1678492785}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3e2eed22586f4acea61f32d8db57d9d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentPos: 0
-  mainMode: 1
-  contentParent: {fileID: 1071628788}
-  itemPrefab: {fileID: 1800838598213053851, guid: c4c4a7604c13d4bbbacd35f7b39f166b, type: 3}
-  savedModelPanel: {fileID: 1646123950}
-  mapLoader: {fileID: 0}
 --- !u!1 &1682722247
 GameObject:
   m_ObjectHideFlags: 0
@@ -17767,3 +17798,4 @@ SceneRoots:
   - {fileID: 28483027}
   - {fileID: 567865079}
   - {fileID: 1093360045}
+  - {fileID: 123808183}

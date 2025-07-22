@@ -69,7 +69,7 @@ public class MapSaver : MonoBehaviour
         data.map_type = "grid";
         data.map_owner_id = TextDataManager.Instance.userId;
         data.map_owner_name = TextDataManager.Instance.enteredUsername;
-        data.max_steps = 30;
+        data.max_steps = TextDataManager.Instance.mapStep;
         data.agent_pos = new Vector2Int(0, 0);
         data.exit_pos = Vector2Int.RoundToInt(exit.transform.position);
 

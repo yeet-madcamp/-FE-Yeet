@@ -11,6 +11,8 @@ public class TextDataManager : MonoBehaviour
     [HideInInspector] public string enteredId;
     [HideInInspector] public string enteredUsername;
     [HideInInspector] public string userId;
+    [HideInInspector] public int mapStep = 40;
+
 
 
     void Awake()

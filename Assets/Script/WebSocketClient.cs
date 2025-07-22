@@ -17,6 +17,8 @@ public class WebSocketClient : MonoBehaviour
 
     private WebSocket websocket;
 
+    public bool isSpeedMode = false;
+
     string uri;
 
     async void Start()
@@ -179,6 +181,13 @@ public class WebSocketClient : MonoBehaviour
 
         Vector2 targetPos = new Vector2(msg.state[0], msg.state[1]);
 
-        player.MoveToPosition(targetPos, TryMoveNextStep);  // 다음 이동 예약
+        if (isSpeedMode || TextDataManager.Instance.isLoopOn)
+            player.MoveToPosition(targetPos, TryMoveNextStep);  // 다음 이동 예약
+        else if (!isSpeedMode)
+            player.MoveToSmoothPosition(targetPos, TryMoveNextStep);
+    }
+    public void OnClickSpeedMode()
+    {
+        isSpeedMode = !isSpeedMode;
     }
 }

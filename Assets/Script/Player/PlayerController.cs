@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     private Movement2D movement2D;
     private Vector3 startPosition;
+    
 
     private void Awake()
     {
@@ -29,10 +30,23 @@ public class PlayerController : MonoBehaviour
     {
         StartCoroutine(MoveRoutine(target, onComplete));
     }
+    public void MoveToSmoothPosition(Vector2 target, Action onComplete)
+    {
+        StartCoroutine(MoveSmoothRoutine(target, onComplete));
+    }
 
     private IEnumerator MoveRoutine(Vector2 target, Action onComplete)
     {
         movement2D.MoveTo(target);  // Movement2D에 정의된 함수
+
+        while (movement2D.IsMove)
+            yield return null;
+
+        onComplete?.Invoke();
+    }
+    private IEnumerator MoveSmoothRoutine(Vector2 target, Action onComplete)
+    {
+        movement2D.MoveToSmooth(target);  // Movement2D에 정의된 함수
 
         while (movement2D.IsMove)
             yield return null;

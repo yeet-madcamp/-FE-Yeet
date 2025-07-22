@@ -8,6 +8,7 @@ using static UnityEditor.PlayerSettings;
 public class MapLoader : MonoBehaviour
 {
     [SerializeField] private GridManager gridManager;     // 그리드 생성기
+    [SerializeField] private Movement2D movement2D;
 
     [SerializeField] GameObject[] editPrefabs;
     [SerializeField] Transform[] editParents;
@@ -53,6 +54,10 @@ public class MapLoader : MonoBehaviour
         MapDataList dataList = JsonUtility.FromJson<MapDataList>(rawJson);
 
         MapData targetMap = dataList.maps.Find(map => map.map_name == mapName);
+
+        Vector2Int initialPosition = new Vector2Int(targetMap.agent_pos[0], targetMap.agent_pos[1]);
+
+        movement2D.SetInitialPosition(initialPosition);
         if (targetMap == null)
         {
             Debug.LogWarning($"🟡 해당 이름의 맵이 존재하지 않습니다. 새 맵으로 간주합니다: {mapName}");

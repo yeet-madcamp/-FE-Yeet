@@ -1,0 +1,23 @@
+{
+    "map_id": "map_e68fec",
+    "map_name": "100",
+    "map_type": "grid",
+    "map_owner_id": "44e77b",
+    "map_owner_name": "1234",
+    "map_size": [
+        5,
+        5
+    ],
+    "max_steps": 100,
+    "agent_pos": {
+        "x": 0,
+        "y": 0
+    },
+    "exit_pos": {
+        "x": 2,
+        "y": 0
+    },
+    "wall_list": [],
+    "bit_list": [],
+    "trap_list": []
+}

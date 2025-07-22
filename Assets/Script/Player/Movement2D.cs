@@ -4,12 +4,14 @@ using UnityEngine;
 public class Movement2D : MonoBehaviour
 {
     [SerializeField]
-    private float moveTime = 0.001f;
+    private float moveTime = 0.000001f;
 
     private int minX = 0;
     private int maxX = 6;
     private int minY = 0;
     private int maxY = 6;
+
+    
 
     private GridManager gridManager;
 
@@ -27,11 +29,23 @@ public class Movement2D : MonoBehaviour
 
     private void Start()
     {
-        gridPosition = Vector2Int.RoundToInt(transform.position);
-        transform.position = new Vector3(gridPosition.x, gridPosition.y, 0);
+        //gridPosition = Vector2Int.RoundToInt(transform.position);
+        //transform.position = new Vector3(gridPosition.x, gridPosition.y, 0);
 
-        initialGridPosition = gridPosition;
-        initialWorldPosition = transform.position;
+        //initialGridPosition = gridPosition;
+        //initialWorldPosition = transform.position;
+
+        //int offsetC = gridManager.columns / 2;
+        //int offsetR = gridManager.rows / 2;
+        //maxX = offsetC;
+        //maxY = offsetR;
+        //minX = -offsetC;
+        //minY = -offsetR;
+    }
+
+    public void SetInitialPosition(Vector2Int gridPos)
+    {
+        gridManager = GameObject.Find("GameManager").GetComponent<GridManager>();
 
         int offsetC = gridManager.columns / 2;
         int offsetR = gridManager.rows / 2;
@@ -39,22 +53,22 @@ public class Movement2D : MonoBehaviour
         maxY = offsetR;
         minX = -offsetC;
         minY = -offsetR;
+
+        gridPosition = gridPos;
+        initialGridPosition = gridPos;
+
+        initialWorldPosition = new Vector3(gridPos.x, gridPos.y, 0);
+        transform.position = initialWorldPosition;
     }
 
     public void MoveTo(Vector2 targetGrid)
     {
-        if(TextDataManager.Instance.isLoopOn == true)
-        {
-            moveStraitGrid(targetGrid);
-        }
-        else
-        {
-            
-            StopAllCoroutines(); // 이전 이동 취소
-            StartCoroutine(GridSmoothMovement(Vector2Int.RoundToInt(targetGrid)));
-        }
-        
-
+        moveStraitGrid(targetGrid);
+    }
+    public void MoveToSmooth(Vector2 targetGrid)
+    {
+        StopAllCoroutines(); // 이전 이동 취소
+        StartCoroutine(GridSmoothMovement(Vector2Int.RoundToInt(targetGrid)));
     }
 
     void moveStraitGrid(Vector2 targetGrid)
@@ -130,7 +144,7 @@ public class Movement2D : MonoBehaviour
         transform.position = end;
         IsMove = false;
 
-        yield return new WaitForSeconds(0.01f); // 약간의 텀 (선택)
+        yield return new WaitForSeconds(0.0001f); // 약간의 텀 (선택)
     }
 
     public void ResetToStart()
