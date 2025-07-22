@@ -7,6 +7,7 @@ public class TextDataManager : MonoBehaviour
     [HideInInspector] public string mapName = "grid_data"; // 저장 또는 불러올 맵 이름
     [HideInInspector] public string mapId = "";             // ✅ 서버에서 받아온 map_id 저장용
     [HideInInspector] public string modelId = "";
+    [HideInInspector] public bool isLoopOn = false;
 
 
     void Awake()

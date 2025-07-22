@@ -27,4 +27,6 @@ public class UIManager : MonoBehaviour
             isPopupOn = false;
         }
     }
+
+
 }

@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class SceneLoader : MonoBehaviour
 {
     [SerializeField] TextEditor textEditor;
+    [SerializeField] WebSocketClient ws;
     public void LoadSandboxScene()
     {
         string currentInput = textEditor.inputField.text;
@@ -20,6 +21,8 @@ public class SceneLoader : MonoBehaviour
     }
     public void LoadMainScene()
     {
+        TextDataManager.Instance.isLoopOn = false;
+        ws.DisconnectWebSocket();
         SceneManager.LoadScene("MainScene");
     }
     public void LoadTrainingScene()

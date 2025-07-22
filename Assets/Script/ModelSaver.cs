@@ -51,7 +51,9 @@ public class ModelSaver : MonoBehaviour
             model_name = name,
             model_type = type,
             learning_rate = rate,
-            batch_size = batch
+            batch_size = batch,
+            model_owner_id = "jsewo9119",
+            model_owner_name = "seowoo"
         };
 
         // 서버로 POST 전송

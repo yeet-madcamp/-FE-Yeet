@@ -1,9 +1,11 @@
 using System.Collections;
 using UnityEngine;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
-	private	Movement2D	movement2D;
+    private Movement2D movement2D;
+    private Vector3 startPosition;
 
     private void Awake()
     {
@@ -12,12 +14,36 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        //StartCoroutine(ChangeDirectionRoutine());
+        startPosition = transform.position;
     }
 
+    public bool IsMoving => movement2D.IsMove;
+
+    public void ResetPosition()
+    {
+        movement2D.ResetToStart();
+    }
+
+    // ✅ 외부에서 절대 위치 이동 요청
+    public void MoveToPosition(Vector2 target, Action onComplete)
+    {
+        StartCoroutine(MoveRoutine(target, onComplete));
+    }
+
+    private IEnumerator MoveRoutine(Vector2 target, Action onComplete)
+    {
+        movement2D.MoveTo(target);  // Movement2D에 정의된 함수
+
+        while (movement2D.IsMove)
+            yield return null;
+
+        onComplete?.Invoke();
+    }
+
+    // ✅ 수동 테스트용 방향키 입력 (필요 없으면 제거해도 됨)
     private void Update()
     {
-        if (movement2D.IsMove) return; // 이동 중이면 입력 무시
+        if (movement2D.IsMove) return;
 
         Vector3 dir = Vector3.zero;
 
@@ -32,31 +58,8 @@ public class PlayerController : MonoBehaviour
 
         if (dir != Vector3.zero)
         {
-            movement2D.MoveDirection = dir;
-        }
-    }
-
-    private IEnumerator ChangeDirectionRoutine()
-    {
-        while (true)
-        {
-            Vector3 dir = Vector3.zero;
-
-            int axis = Random.Range(0, 2); // 0이면 x축, 1이면 y축 (임시 랜덤)
-
-            if (axis == 0)
-            {
-                dir = new Vector3(Random.Range(0, 2) * 2 - 1, 0, 0); // (-1, 0) 또는 (1, 0)
-            }
-            else
-            {
-                dir = new Vector3(0, Random.Range(0, 2) * 2 - 1, 0); // (0, -1) 또는 (0, 1)
-            }
-
-            movement2D.MoveDirection = dir; // dir을 backend에서 가져온 값을 넣으면 될듯?
-
-            yield return new WaitForSeconds(1f);
+            Vector2 nextPos = transform.position + dir;
+            MoveToPosition(nextPos, null);
         }
     }
 }
-
