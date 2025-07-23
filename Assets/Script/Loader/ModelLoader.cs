@@ -81,30 +81,38 @@ public class ModelLoader : MonoBehaviour
             foreach (ModelData model in modelList.models)
             {
                 Debug.Log($"📦 모델 이름: {model.model_name}, ID: {model.model_id}, 타입: {model.model_type}");
-                if (model.model_color != null)
+                if(model.model_id == TextDataManager.Instance.modelId)
                 {
-                    Color agentColor = HexToColor(model.model_color);
-
-                    // Agent 오브젝트 찾아서 이미지 색상 적용
-                    GameObject agent = GameObject.FindGameObjectWithTag("Player");
-                    Debug.Log(agent ? $"🔍 찾은 오브젝트 이름: {agent.name}" : "❌ Player 태그 오브젝트 없음");
-                    Debug.Log("들어보기 전");
-                    if (agent != null)
+                    if (model.model_color != null)
                     {
-                        Debug.Log("에이전트 있음 ");
-                        var spriteRenderer = agent.GetComponent<SpriteRenderer>();
-                        var spriteRendererInChild = agent.GetComponentInChildren<SpriteRenderer>();
-                        Debug.Log(spriteRenderer ? "✅ SpriteRenderer 있음" : "❌ SpriteRenderer 없음");
-                        if (spriteRenderer != null)
+                        Color agentColor = HexToColor(model.model_color);
+
+                        // Agent 오브젝트 찾아서 이미지 색상 적용
+                        GameObject agent = GameObject.FindGameObjectWithTag("Player");
+                        Debug.Log(agent ? $"🔍 찾은 오브젝트 이름: {agent.name}" : "❌ Player 태그 오브젝트 없음");
+                        Debug.Log("들어보기 전");
+                        if (agent != null)
                         {
-                            spriteRenderer.color = agentColor;
-                            spriteRendererInChild.color = agentColor;
+                            Debug.Log("에이전트 있음 ");
+                            var spriteRenderer = agent.GetComponent<SpriteRenderer>();
+
+                            Debug.Log(spriteRenderer ? "✅ SpriteRenderer 있음" : "❌ SpriteRenderer 없음");
+                            if (spriteRenderer != null)
+                            {
+                                spriteRenderer.color = agentColor;
+                                foreach (var childRenderer in agent.GetComponentsInChildren<SpriteRenderer>())
+                                {
+                                    if (childRenderer != spriteRenderer) // 부모 본인은 제외
+                                    {
+                                        childRenderer.color = agentColor;
+                                        Debug.Log($"🎨 자식 SpriteRenderer 색상 변경: {childRenderer.gameObject.name}");
+                                    }
+                                }
+                            }
+
                         }
-                        
                     }
                 }
-
-                break; // 첫 번째 모델만 적용하고 종료
             }
         }
 
@@ -114,12 +122,18 @@ public class ModelLoader : MonoBehaviour
         Debug.Log("컬러 전 ");
         if (!string.IsNullOrEmpty(hex))
         {
-            Debug.Log("컬러 후  ");
-            Debug.Log("ColorChange");
+            Debug.Log($"컬러 값 원본: {hex}");
             Color color;
-            if (ColorUtility.TryParseHtmlString("#"+hex, out color))
+            if (ColorUtility.TryParseHtmlString(hex.StartsWith("#") ? hex : "#" + hex, out color))
+            {
+                Debug.Log($"✅ 파싱된 색상: {color}");
                 return color;
+            }
+            else
+            {
+                Debug.LogError("❌ Color 파싱 실패");
+            }
         }
-        return Color.white; // 실패 시 기본값
+        return Color.white;
     }
 }
