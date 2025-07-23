@@ -66,9 +66,19 @@ public class ModelListLoader : MonoBehaviour
                 var button = item.GetComponent<Button>();
                 if (button != null)
                 {
+                    var capturedModel = model;
+
+                    // ⬇️ 자식 중 Image 컴포넌트 찾기
+                    RawImage modelImage = item.GetComponentInChildren<RawImage>();
+
+                    // ⬇️ model_color 파싱해서 색상 적용
+                    if (modelImage != null && !string.IsNullOrEmpty(capturedModel.model_color))
+                    {
+                        Color parsedColor = HexToColor(capturedModel.model_color);
+                        modelImage.color = parsedColor;
+                    }
                     if (mainMode == MainMode.edit)
                     {
-                        var capturedModel = model; // 🔒 캡처 중요
                         button.onClick.AddListener(() =>
                         {
                             Debug.Log($"🧠 선택된 모델: {capturedModel.model_name} (ID: {capturedModel.model_id})");
@@ -77,13 +87,12 @@ public class ModelListLoader : MonoBehaviour
                     }
                     else if (mainMode == MainMode.train)
                     {
-                        var capturedModel = model;
+
                         button.onClick.AddListener(() =>
                         {
-                            TextDataManager.Instance.modelId = model.model_id;
-                            OnModelSelectedColor(button);
+                            TextDataManager.Instance.modelId = capturedModel.model_id;
+                            OnModelSelectedColor(button); // ✅ 선택된 버튼에 하이라이트
                         });
-
                     }
                 }
             }
@@ -172,5 +181,14 @@ public class ModelListLoader : MonoBehaviour
 
         selectedModelButton = currentButton;
     }
-
+    Color HexToColor(string hex)
+    {
+        if (!string.IsNullOrEmpty(hex))
+        {
+            Color color;
+            if (ColorUtility.TryParseHtmlString("#"+hex, out color))
+                return color;
+        }
+        return Color.white;
+    }
 }

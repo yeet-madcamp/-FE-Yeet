@@ -992,7 +992,7 @@ MonoBehaviour:
   mainMode: 0
   contentParent: {fileID: 306907457}
   itemPrefab: {fileID: 2250342714898534189, guid: 2b7211677080d4b3a82a5ee66fb277b8, type: 3}
-  savedModelPanel: {fileID: 0}
+  savedModelPanel: {fileID: 1031534321}
   mapLoader: {fileID: 1666550121}
 --- !u!1 &230754203
 GameObject:

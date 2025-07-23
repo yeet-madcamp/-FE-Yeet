@@ -1666,6 +1666,7 @@ MonoBehaviour:
   stepText: {fileID: 1867648396}
   successText: {fileID: 1358932872}
   SuccessPanel: {fileID: 1425863245}
+  modelLoader: {fileID: 0}
   isSpeedMode: 0
 --- !u!4 &1556028770
 Transform:
@@ -1692,6 +1693,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1693719595}
   - component: {fileID: 1693719593}
+  - component: {fileID: 1693719596}
   m_Layer: 0
   m_Name: EditController
   m_TagString: Untagged
@@ -1739,6 +1741,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1693719596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1693719591}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c62efa5f719264cd3ae8c96c9c2227ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1696980356
 GameObject:
   m_ObjectHideFlags: 0

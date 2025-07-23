@@ -10,7 +10,7 @@ public class ModelSaver : MonoBehaviour
 
     [Header("UI Elements")]
     [SerializeField] private TMP_InputField nameInput;
-    [SerializeField] private TMP_InputField typeInput;
+    [SerializeField] private TMP_InputField colorInput;
     [SerializeField] private TMP_InputField rateInput;
     [SerializeField] private TMP_InputField batchInput;
     [SerializeField] private GameObject newModelPanel;
@@ -35,12 +35,13 @@ public class ModelSaver : MonoBehaviour
     {
         // 입력값 받아오기
         string name = nameInput.text;
-        string type = typeInput.text;
+        string color = colorInput.text;
         float.TryParse(rateInput.text, out float rate);
         int.TryParse(batchInput.text, out int batch);
+        Debug.Log("agent color : " + color);
 
         // 유효성 검사
-        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(type))
+        if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(color))
         {
             Debug.LogWarning("❗ 이름/타입은 비워둘 수 없습니다.");
             yield break;
@@ -49,7 +50,7 @@ public class ModelSaver : MonoBehaviour
         ModelData newModel = new ModelData
         {
             model_name = name,
-            model_type = type,
+            model_type = "grid",
             learning_rate = rate,
             batch_size = batch,
             model_owner_id = TextDataManager.Instance.userId,
@@ -58,7 +59,8 @@ public class ModelSaver : MonoBehaviour
             epsilon_start = 1,
             epsilon_min = 0.05f,
             epsilon_decay = 0.995f,
-            update_target_every = 10
+            update_target_every = 10,
+            model_color = color
         };
 
         // 서버로 POST 전송

@@ -95,6 +95,7 @@ public class MapListLoader : MonoBehaviour
             if (button != null)
             {
                 string selectedName = map.map_name;
+                RawImage rawImage = savedModelPanel.GetComponentInChildren<RawImage>();
 
                 if (currentPos == ScenePosition.sandbox)
                 {
@@ -114,6 +115,7 @@ public class MapListLoader : MonoBehaviour
                             TextDataManager.Instance.mapId = map.map_id;
                             savedModelPanel.SetActive(true);
                             savedModelPanel.GetComponentInChildren<TMPro.TextMeshProUGUI>().text = selectedName;
+                            StartCoroutine(LoadThumbnail(map.map_id,rawImage));
                         });
                     }
                     else if (mainMode == MainMode.train)
@@ -125,6 +127,7 @@ public class MapListLoader : MonoBehaviour
                             Debug.Log("mapName =" + TextDataManager.Instance.mapName);
                             Debug.Log("mapId =" + TextDataManager.Instance.mapId);
                             OnMapSelected(button);
+                            
                         });
                         
                     }

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.Networking;
+#if UNITY_EDI
 using static UnityEditor.PlayerSettings;
+#endif
 
 public class MapLoader : MonoBehaviour
 {

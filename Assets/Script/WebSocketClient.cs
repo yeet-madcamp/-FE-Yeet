@@ -15,6 +15,8 @@ public class WebSocketClient : MonoBehaviour
 
     [SerializeField] private GameObject SuccessPanel;
 
+    [SerializeField] private ModelLoader modelLoader;
+
     [SerializeField] private Queue<StepMessage> messageQueue = new Queue<StepMessage>();
 
     private WebSocket websocket;
@@ -73,6 +75,7 @@ public class WebSocketClient : MonoBehaviour
                         case "model_loaded":
                             var loaded = JsonConvert.DeserializeObject<ModelPathMessage>(message);
                             Debug.Log("📦 모델 로드됨: " + loaded.model_url);
+                            //modelLoader.LoadModelsFormServerCall();
                             break;
 
                         case "model_saved":
